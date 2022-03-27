@@ -1,0 +1,31 @@
+.card-done {
+	border-left: 5px solid green !important;
+}
+
+.card-on-time {
+	border-left: 5px solid gray !important;
+}
+
+.card-late {
+	border-left: 5px solid red !important;
+}
+
+.mr-2 {
+	margin-right: 1rem;
+}
+
+.mr-4 {
+	margin-right: 4rem;
+}
+
+.status-done {
+	color: green;
+}
+
+.status-on-time {
+	color: gray;
+}
+
+.status-late {
+	color: red;
+}
