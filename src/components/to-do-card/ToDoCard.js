@@ -19,7 +19,8 @@ export const ToDoCard = ( {
     description,
     isDone
 } ) => {
-    const dueDateParsed = parseDate( dueDate , '/' );
+    const creationDateParsed = parseDate( creationDate, '/' );
+    const dueDateParsed = parseDate( dueDate, '/' );
 
     const statusIcon = <FontAwesomeIcon icon={ 
             ( isDone ) ? faCircleCheck : ( isFirstDateMoreThanSecondDate( dueDate, todayDate.date ) ) ? faClock : faCircleXmark
@@ -42,7 +43,8 @@ export const ToDoCard = ( {
                 
                 <Box sx={ { display: 'flex', justifyContent: 'flex-end' } }>
                     <Box sx={ { display: 'flex', alignItems: 'center' } }>
-                        <TextField id="standard-basic" label={ dueDateParsed } variant="standard" disabled sx={ { mr: 4 } } />
+                        <TextField id="standard-basic" label="Fecha de creación" value={ creationDateParsed } variant="standard" disabled sx={ { mr: 4 } } />
+                        <TextField id="standard-basic" label="Fecha de vencimiento" value={ dueDateParsed } variant="standard" disabled sx={ { mr: 4 } } />
                         <FontAwesomeIcon icon={ faCalendarDays } size="2x" className="mr-4" />
                     </Box>
 

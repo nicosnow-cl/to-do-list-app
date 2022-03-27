@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { Box} from "@mui/material";
+import { Box, Card, LinearProgress } from "@mui/material";
 
 import { ToDoTitle } from "./components/to-do-title/ToDoTitle";
 import { ToDoGrid } from "./components/to-do-grid/ToDoGrid";
@@ -10,19 +10,41 @@ import { EditToDoDialog } from "./components/edit-to-do-dialog/EditToDoDialog";
 
 import { getCurrentDate } from "./helpers/dateHelper";
 
-import { useFetch } from "./hooks/useFetch";
+import { useGetFetchToDos } from "./hooks/useFetchToDos";
 
 import './ToDoListApp.css';
 import { Filters } from "./components/filters/Filters";
 
 export const ToDoListApp = () => {
-    const todayDate = getCurrentDate( '/' );
-    let yesterdayDate = new Date();
-    yesterdayDate.setDate( todayDate.date.getDate() -1 );
-    const { getToDos } = useFetch();
-
-    const toDos = getToDos();
-
+    const [ state, setState ] = useState( {
+        todayDate: getCurrentDate( '/' ),
+        toDos: [],
+        loading: true,
+        newToDo: {
+            id: null,
+            creationDate: null,
+            dueDate: null,
+            description: '',
+            isDone: false
+        },
+        editToDo: {
+            id: null,
+            creationDate: null,
+            dueDate: null,
+            description: '',
+            isDone: false
+        }
+    } );
+    
+    const { toDosData, setToDosData } = useGetFetchToDos();      
+    useEffect( () => {
+        setState( {
+            ...state,
+            toDos: toDosData.data,
+            loading: toDosData.loading
+        } );
+    }, [ toDosData ] );
+    
     const handleChange = () => {
         console.log( 'reordenar' );
     }
@@ -47,19 +69,26 @@ export const ToDoListApp = () => {
     };
 
     return (
-    <Box className="container">
-        <ToDoTitle todayDate={ todayDate } />
-        <hr />
-        <br />
-        
-        <Filters handleChange={ handleChange } />
+        <Box className="container">
+            <ToDoTitle todayDate={ state.todayDate } />
+            <hr />
+            <br />
 
-        <ToDoGrid toDos={ toDos } todayDate={ todayDate } handleEditDialogOpen={ handleEditDialogOpen } />
+            <Filters handleChange={ handleChange } />
 
-        <AddToDo handleClickOpen={ handleAddDialogOpen } />
+            {
+                ( state.loading ) ? 
+                <Box>
+                    <Card>
+                        <LinearProgress color="success" />
+                    </Card>
+                </Box>  : <ToDoGrid toDos={ state.toDos } todayDate={ state.todayDate } handleEditDialogOpen={ handleEditDialogOpen } />
+            }
+            
+            <AddToDo handleClickOpen={ handleAddDialogOpen } />
 
-        <AddToDoDialog dialogState={ addDialogState } handleClose={ handleAddDialogClose } />
-        <EditToDoDialog dialogState={ editDialogState } handleClose={ handleEditDialogClose } />
-    </Box>
-  );
+            <AddToDoDialog dialogState={ addDialogState } handleClose={ handleAddDialogClose } />
+            <EditToDoDialog dialogState={ editDialogState } handleClose={ handleEditDialogClose } />
+        </Box>
+    );
 }
