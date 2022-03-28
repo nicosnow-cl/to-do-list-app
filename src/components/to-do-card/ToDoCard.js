@@ -38,8 +38,8 @@ export const ToDoCard = ( {
         <Card variant="outlined" sx={ { p: 3, mb: 2 } } className={ ( isDone ) ? 'card-done' : ( isFirstDateMoreThanSecondDate( dueDate, todayDate.date ) ) ? 'card-on-time' : 'card-late' }> 
 
             <Box sx={ { display: 'flex', justifyContent: 'space-between' } }>
-                <Box sx={ { display: 'flex', justifyContent: 'flex-start' } }>
-                    <Checkbox onChange={ handleCheck } />
+                <Box sx={ { display: 'flex', justifyContent: 'flex-start' } }>                    
+                    <Checkbox onChange={ handleCheck } /> 
 
                     <p>
                         { description }
@@ -57,9 +57,12 @@ export const ToDoCard = ( {
                         statusIcon
                     }
 
-                    <Button sx={ { ml: 2 } } onClick={ () => handleEditDialogOpen( id ) }>
-                        Editar
-                    </Button>
+                    {
+                        ( !isDone ) && <Button sx={ { ml: 2 } } onClick={ () => handleEditDialogOpen( id ) }>
+                            Editar
+                        </Button>
+                    }
+                    
                 </Box>
             </Box>
             
