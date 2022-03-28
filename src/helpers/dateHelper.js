@@ -19,7 +19,11 @@ export const parseDate = ( date, separator = '' ) => {
     return `${ _date }${ separator }${ month < 10 ? `0${ month }`:`${ month }`}${ separator }${ year }`;
 }
 
-export const isFirstDateMoreThanSecondDate = ( date1, date2 ) => {
-    console.log( date1 );
-    return date1.getTime() >= date2.getTime();
+export const isFirstDateMoreThanSecondDate = ( date1 = new Date(), date2 = new Date() ) => {
+    const firstDate = new Date( date1 );
+    firstDate.setHours( 0, 0, 0, 0 )
+    const secondDate = new Date( date2 );
+    secondDate.setHours( 0, 0, 0, 0 )
+
+    return ( firstDate >= secondDate);     
 }

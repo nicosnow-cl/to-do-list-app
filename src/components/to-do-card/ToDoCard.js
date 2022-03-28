@@ -13,6 +13,7 @@ import './ToDoCard.css';
 export const ToDoCard = ( { 
     todayDate,
     handleEditDialogOpen,
+    handleSelected,
     id,
     creationDate,
     dueDate,
@@ -29,12 +30,16 @@ export const ToDoCard = ( {
         }     
     />;
 
+    const handleCheck = ( evt, isChecked ) => {
+        handleSelected( id, isChecked );
+    }
+
     return (
         <Card variant="outlined" sx={ { p: 3, mb: 2 } } className={ ( isDone ) ? 'card-done' : ( isFirstDateMoreThanSecondDate( dueDate, todayDate.date ) ) ? 'card-on-time' : 'card-late' }> 
 
             <Box sx={ { display: 'flex', justifyContent: 'space-between' } }>
                 <Box sx={ { display: 'flex', justifyContent: 'flex-start' } }>
-                    <Checkbox  />
+                    <Checkbox onChange={ handleCheck } />
 
                     <p>
                         { description }
@@ -52,7 +57,7 @@ export const ToDoCard = ( {
                         statusIcon
                     }
 
-                    <Button sx={ { ml: 2 } } onClick={ handleEditDialogOpen }>
+                    <Button sx={ { ml: 2 } } onClick={ () => handleEditDialogOpen( id ) }>
                         Editar
                     </Button>
                 </Box>

@@ -13,7 +13,7 @@ const formDefault = {
     isDone: false
 }
 
-export const AddToDoDialog = ( { dialogState, handleClose } ) => {
+export const AddToDoDialog = ( { setReload, dialogState, handleClose } ) => {
     const [ formError, setFormError ] = useState( false );
     const [ formValues, setFormValues ] = useState( formDefault );
 
@@ -48,6 +48,7 @@ export const AddToDoDialog = ( { dialogState, handleClose } ) => {
         postToDo( formValues ).then( ( data ) => {
             if ( data ) {
                 setFormValues( formDefault );
+                setReload( ( c ) => !c );
                 handleClose();
             }
         } );

@@ -1,25 +1,3 @@
 {
-  "todos": [
-    {
-      "id": 1648417675596,
-      "creationDate": "2022-03-27T21:47:55.596Z",
-      "dueDate": "2022-03-27T21:42:03.901Z",
-      "description": "Descripción de prueba",
-      "isDone": false
-    },
-    {
-      "id": 1648417923703,
-      "creationDate": "2022-03-27T21:52:03.703Z",
-      "dueDate": "2022-03-27T21:51:45.859Z",
-      "description": "Segunda tarea de prueba",
-      "isDone": false
-    },
-    {
-      "id": 1648417971686,
-      "creationDate": "2022-03-27T21:52:51.686Z",
-      "dueDate": "2022-03-28T21:51:45.000Z",
-      "description": "Tercera descripcion bien bonita",
-      "isDone": false
-    }
-  ]
+  "todos": []
 }

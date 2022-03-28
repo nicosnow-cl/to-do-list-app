@@ -1,13 +1,35 @@
+import { useState } from 'react'
 import { Box, Button, Card, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
-import React from 'react'
 
-export const Filters = ( { handleChange } ) => {
+export const Filters = ( { handleChange, handleFreeSelected, handleDeleteSelected, selected } ) => {
+    const [ sortSelect, setSortSelect ] = useState( 0 );
+ 
+    const handleSortSelect = ( { target } ) => {
+        const type = target.value 
+        setSortSelect( type );
+        handleChange( type );
+    }
+
     return (
         <Box>
             <Card sx={ { display: 'flex', justifyContent: 'space-between', p: 2 } }>
                 <Box sx={ { display: 'flex' } }>
-                    <Button variant="outlined" sx={ { mr: 2 } }> Liberar seleccionadas </Button>
-                    <Button variant="outlined" color="warning"> Borrar seleccionadas </Button>
+                    <Button 
+                        variant="outlined" 
+                        sx={ { mr: 2 } }
+                        onClick={ handleFreeSelected }
+                        disabled={ selected.length === 0 }
+                    > 
+                        Liberar seleccionadas 
+                    </Button>
+                    <Button 
+                        variant="outlined" 
+                        color="warning"
+                        onClick={ handleDeleteSelected }
+                        disabled={ selected.length === 0 }
+                    > 
+                        Borrar seleccionadas 
+                    </Button>
                 </Box>
 
                 <div>
@@ -16,13 +38,13 @@ export const Filters = ( { handleChange } ) => {
                         <Select
                             labelId="ordenar-select-label"
                             id="ordenar-aelect"
-                            value={10}
+                            value={ sortSelect }
                             label="Age"
-                            onChange={ handleChange }
+                            onChange={ handleSortSelect }
                         >
-                            <MenuItem value={10}> Fecha creación </MenuItem>
-                            <MenuItem value={20}> Fecha vencimiento </MenuItem>
-                            <MenuItem value={20}> Estado </MenuItem>
+                            <MenuItem value={ 0 }> Fecha creación </MenuItem>
+                            <MenuItem value={ 1 }> Fecha vencimiento </MenuItem>
+                            <MenuItem value={ 2 }> Estado </MenuItem>
                         </Select>
                     </FormControl>
 

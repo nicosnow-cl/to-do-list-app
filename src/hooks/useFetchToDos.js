@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
-import  { getToDos, postToDo } from '../helpers/dbHelper';
+import  { getToDos } from '../helpers/dbHelper';
 
-export const useGetFetchToDos = () => {
+export const useGetFetchToDos = ( reload ) => {
     const [ toDosData, setToDosData ] = useState( {
         data: [],
         loading: true
@@ -23,7 +23,7 @@ export const useGetFetchToDos = () => {
                 } )
             } )
         }, 1000 );
-    }, [] );
+    }, [ reload ] );
     
 
     return { toDosData, setToDosData };
