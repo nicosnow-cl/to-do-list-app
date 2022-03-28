@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from 'react';
 import { Box, Button, Card, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 
 export const Filters = ( { handleChange, handleFreeSelected, handleDeleteSelected, selected } ) => {
@@ -44,23 +44,6 @@ export const Filters = ( { handleChange, handleFreeSelected, handleDeleteSelecte
                         >
                             <MenuItem value={ 0 }> Fecha creación </MenuItem>
                             <MenuItem value={ 1 }> Fecha vencimiento </MenuItem>
-                            <MenuItem value={ 2 }> Estado </MenuItem>
-                        </Select>
-                    </FormControl>
-
-                    <FormControl>
-                        <InputLabel id="filtrar-select-label"> Filtrar </InputLabel>
-                        <Select
-                            labelId="filtrar-select-label"
-                            id="filtrar-select"
-                            value={10}
-                            label="Age"
-                            onChange={ handleChange }
-                        >
-                            <MenuItem value={10}> Todas </MenuItem>
-                            <MenuItem value={20}> Liberada </MenuItem>
-                            <MenuItem value={20}> A tiempo </MenuItem>
-                            <MenuItem value={20}> Atrasada </MenuItem>
                         </Select>
                     </FormControl>
                 </div>
