@@ -1,9 +1,8 @@
 export const getToDos = async () => {
     const url = 'http://localhost:3004/todos';
     const response = await fetch( url );
-    const data = await response.json();
-
-    return data;
+    
+    return await response.json();
 }
 
 export const postToDo = async ( toDo ) => {
@@ -14,12 +13,11 @@ export const postToDo = async ( toDo ) => {
         body: JSON.stringify( { ...toDo } )
     };
     const response = await fetch( url, requestOptions );
-    const data = await response.json();
-
-    return data;
+    
+    return await response.json();
 }
 
-export const patchDoneToDos = async ( selected = [] ) => {
+export const patchDoneToDos = async ( ids = [] ) => {
     const baseUrl = 'http://localhost:3004/todos/';
     const requestOptions = {
         method: 'PATCH',
@@ -27,7 +25,7 @@ export const patchDoneToDos = async ( selected = [] ) => {
         body: JSON.stringify( { isDone: true } )
     };
 
-    selected.forEach( async( id ) => {
+    ids.forEach( async( id ) => {
         await fetch( baseUrl + id, requestOptions );
     } );
 } 
@@ -40,9 +38,8 @@ export const putToDo = async ( toDo ) => {
         body: JSON.stringify( { ...toDo } )
     };
     const response = await fetch( url, requestOptions );
-    const data = await response.json();
-
-    return data;
+    
+    return await response.json();
 }
 
 export const deleteToDos = async ( selected = [] ) => {

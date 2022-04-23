@@ -1,17 +1,20 @@
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+
 import { Box } from "@mui/system";
 
 import { ToDoCard } from "../to-do-card/ToDoCard";
 
-export const ToDoGrid = ( { toDos, todayDate, handleEditDialogOpen, handleSelected } ) => {
+export const ToDoGrid = () => {
+    // @ts-ignore
+    const { toDoList } = useSelector( ( state ) => state.toDo );   
+
     return (
         <Box sx={ { mt: 4 } }>
             {
-                toDos.map( ( toDo ) => (
+                toDoList.map( ( toDo ) => (
                     <ToDoCard
                         key={ toDo.id }
-                        todayDate={ todayDate }
-                        handleEditDialogOpen={ handleEditDialogOpen }
-                        handleSelected={ handleSelected }
                         { ...toDo }
                     />
                 ) ) 

@@ -1,57 +1,74 @@
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material';
 import { LocalizationProvider } from '@mui/lab';
 import DateAdapter from '@mui/lab/AdapterMoment';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
-import { postToDo } from '../../helpers/dbHelper';
+
+import { useForm } from '../../hooks/useForm';
+
+import { toDoAddNew } from '../../actions/toDo';
+import { addDialogIsClose, startLoading } from '../../actions/ui';
+
+// const formDefault = {
+//     id: null,
+//     creationDate: null,
+//     dueDate: new Date(),
+//     description: '',
+//     isDone: false
+// }
 
 const formDefault = {
-    id: null,
-    creationDate: null,
-    dueDate: new Date(),
-    description: '',
-    isDone: false
-}
+    dueDate: new Date().getTime(),
+    description: ''
+};
 
-export const AddToDoDialog = ( { setReload, dialogState, handleClose } ) => {
+export const AddToDoDialog = () => {
+    const dispatch = useDispatch();
+
+    // @ts-ignore
+    const { addDialogIsOpen:dialogState } = useSelector( ( state ) => state.ui );
+    
     const [ formError, setFormError ] = useState( false );
-    const [ formValues, setFormValues ] = useState( formDefault );
+    const { formValues:{ dueDate, description }, handleInputChange, reset } = useForm( formDefault );
 
-    const handleInputChange = ( evt ) => {
-        const { name, value } = evt.target;
-        
-        setFormValues( {
-            ...formValues,
-            [ name ]: value,
-        } );
-    }
-
-    const handleDueDateChange = ( newValue ) => {
-        setFormValues( {
-            ...formValues,
-            dueDate: newValue
-        } )
+    const handleDueDateChange = ( date ) => {
+        handleInputChange( { target: { name: 'dueDate', value: date.toDate().getTime() } } );
     }
 
     const handleSubmit = ( evt ) => {
         evt.preventDefault();
         setFormError( false );
 
-        const { description } = formValues;
+        if ( !isFormValid() ) {
+            return;
+        } 
+
+        const toDo = {
+            id: new Date().getTime(),
+            creationDate: new Date().getTime(),
+            dueDate,
+            description,
+            isDone: false
+        };
+
+        dispatch( startLoading() );
+        const res = dispatch( toDoAddNew( toDo ) );
+        if ( res.payload ) handleClose();
+    }
+
+    const isFormValid = () => {
         if ( description.trim().length < 10 ) {
             setFormError( true );
-            return;
+            return false;
         }
 
-        formValues.id = new Date().getTime();
-        formValues.creationDate = new Date();
-        postToDo( formValues ).then( ( data ) => {
-            if ( data ) {
-                setFormValues( formDefault );
-                setReload( ( c ) => !c );
-                handleClose();
-            }
-        } );
+        return true;
+    }
+
+    const handleClose = () => {
+        reset();
+        dispatch( addDialogIsClose() );
     }
 
     return (
@@ -74,7 +91,7 @@ export const AddToDoDialog = ( { setReload, dialogState, handleClose } ) => {
                             fullWidth
                             variant="standard"
                             sx={ { mb: 4 } }
-                            value={ formValues.description }
+                            value={ description }
                             onChange={ handleInputChange }
                         />
 
@@ -82,7 +99,7 @@ export const AddToDoDialog = ( { setReload, dialogState, handleClose } ) => {
                             <DesktopDatePicker
                                 label="Fecha de vencimiento"
                                 inputFormat="DD/MM/yyyy"
-                                value={ formValues.dueDate }
+                                value={ dueDate }
                                 onChange={ handleDueDateChange }
                                 renderInput={ (params) => <TextField {...params} /> }
                             />

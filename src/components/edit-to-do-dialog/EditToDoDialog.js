@@ -1,58 +1,80 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material';
 import { LocalizationProvider } from '@mui/lab';
 import DateAdapter from '@mui/lab/AdapterMoment';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
-import { putToDo } from '../../helpers/dbHelper';
+
+import { useForm } from '../../hooks/useForm';
+
+import { toDoStartEditSelected, toDoStartUnselect } from '../../actions/toDo';
+import { editDialogIsClose, startLoading } from '../../actions/ui';
 
 const formDefault = {
-    id: null,
-    creationDate: null,
-    dueDate: new Date(),
-    description: '',
-    isDone: false
-}
+    dueDate: new Date().getTime(),
+    description: ''
+};
 
-export const EditToDoDialog = ( { setReload, editDialogState, handleClose } ) => {
-    const { dialogState, editToDo } = editDialogState;
+export const EditToDoDialog = () => {
+    const dispatch = useDispatch();
+
+    // @ts-ignore
+    const { editDialogIsOpen:dialogState } = useSelector( ( state ) => state.ui );
+    // @ts-ignore
+    const { selectedToDo } = useSelector( ( state ) => state.toDo );
     
     const [ formError, setFormError ] = useState( false );
-    const [ formValues, setFormValues ] = useState( editToDo );
+    const { formValues:{ dueDate, description }, handleInputChange, reset } = useForm( formDefault );
 
-    const handleInputChange = ( evt ) => {
-        const { name, value } = evt.target;
-        
-        setFormValues( {
-            ...formValues,
-            [ name ]: value,
-        } );
-    }
+    const activeId = useRef( selectedToDo?.id );
 
-    const handleDueDateChange = ( newValue ) => {
-        setFormValues( {
-            ...formValues,
-            dueDate: newValue
-        } )
+    useEffect( () => {
+        if ( ( selectedToDo ) && selectedToDo.id !== activeId.current ) {
+            reset( { dueDate: selectedToDo.dueDate, description: selectedToDo.description } );
+            activeId.current = selectedToDo.id;
+        }
+    }, [ selectedToDo, reset ] );
+
+    const handleDueDateChange = ( date ) => {
+        handleInputChange( { target: { name: 'dueDate', value: date.toDate().getTime() } } );
     }
 
     const handleSubmit = ( evt ) => {
         evt.preventDefault();
         setFormError( false );
 
-        const { description } = formValues;
+        if ( !isFormValid() ) {
+            return;
+        } 
+
+        const toDo = {
+            id: selectedToDo.id,
+            creationDate: selectedToDo.id,
+            dueDate,
+            description,
+            isDone: selectedToDo.isDone
+        };
+
+        dispatch( startLoading() );
+        const res = dispatch( toDoStartEditSelected( toDo ) );
+        if ( res.payload ) handleClose();
+    }
+
+    const isFormValid = () => {
         if ( description.trim().length < 10 ) {
             setFormError( true );
-            return;
+            return false;
         }
 
-        formValues.creationDate = new Date();
-        putToDo( formValues ).then( ( data ) => {
-            if ( data ) {
-                setFormValues( formDefault );
-                setReload( ( c ) => !c );
-                handleClose();
-            }
-        } );
+        return true;
+    }
+
+    const handleClose = () => {
+        activeId.current = null;
+        reset();
+        dispatch( toDoStartUnselect() );
+        dispatch( editDialogIsClose() );
     }
 
     return (
@@ -75,7 +97,7 @@ export const EditToDoDialog = ( { setReload, editDialogState, handleClose } ) =>
                             fullWidth
                             variant="standard"
                             sx={ { mb: 4 } }
-                            value={ formValues.description }
+                            value={ description }
                             onChange={ handleInputChange }
                         />
 
@@ -83,7 +105,7 @@ export const EditToDoDialog = ( { setReload, editDialogState, handleClose } ) =>
                             <DesktopDatePicker
                                 label="Fecha de vencimiento"
                                 inputFormat="DD/MM/yyyy"
-                                value={ formValues.dueDate }
+                                value={ dueDate }
                                 onChange={ handleDueDateChange }
                                 renderInput={ (params) => <TextField {...params} /> }
                             />
