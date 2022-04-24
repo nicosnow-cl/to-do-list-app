@@ -59,3 +59,18 @@ export const toDoStartFreeSelectedsSuccess = ( ids ) => ( {
     type: toDoTypes.toDoStartFreeSelectedsSuccess,
     payload: ids
 } )
+
+export const toDoStartDeleteSelecteds = ( ids ) => ( {
+    type: toDoTypes.toDoStartDeleteSelecteds,
+    payload: ids
+} )
+
+export const toDoStartDeleteSelectedsSuccess = ( ids ) => ( {
+    type: toDoTypes.toDoStartDeleteSelectedsSuccess,
+    payload: ids
+} )
+
+export const toDoChangeSortingType = ( sortingType ) => ( {
+    type: toDoTypes.toDoChangeSortingType,
+    payload: sortingType
+} )

@@ -91,12 +91,13 @@ export const ToDoCard = ( {
                         statusIcon
                     }
 
-                    {
-                        ( !isDone ) && <Button sx={ { ml: 2 } } onClick={ handleOpenEditModal } >
-                            Editar
-                        </Button>
-                    }
-                    
+                    <Button 
+                        sx={ { ml: 2 } } 
+                        onClick={ handleOpenEditModal } 
+                        disabled={ isDone }
+                    >
+                        Editar
+                    </Button>
                 </Box>
             </Box>
             

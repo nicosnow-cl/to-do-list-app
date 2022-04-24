@@ -1,5 +1,6 @@
 import { all } from 'redux-saga/effects';
 
+import { deleteToDosWatcherSaga } from './toDo/deleteToDosSaga';
 import { getToDoListWatcherSaga } from './toDo/getToDoListSaga';
 import { patchToDosWatcherSaga } from './toDo/patchToDosSaga';
 import { postToDoWatcherSaga } from './toDo/postToDoSaga';
@@ -10,6 +11,7 @@ export default function* rootSaga() {
         getToDoListWatcherSaga(),
         postToDoWatcherSaga(),
         putToDoWatcherSaga(),
-        patchToDosWatcherSaga()
+        patchToDosWatcherSaga(),
+        deleteToDosWatcherSaga()
     ] );
 }

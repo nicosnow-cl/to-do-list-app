@@ -10,5 +10,8 @@ export const toDoTypes = {
     toDoStartSelectCheckbox: '[ ToDo ] Start select checkbox to do',
     toDoStartUnselectCheckbox: '[ ToDo ] Start unselect checkbox to do',
     toDoStartFreeSelecteds: '[ ToDo ] Start free selecteds to dos',
-    toDoStartFreeSelectedsSuccess: '[ ToDo ] Start free selecteds to dos success'
+    toDoStartFreeSelectedsSuccess: '[ ToDo ] Start free selecteds to dos success',
+    toDoStartDeleteSelecteds: '[ ToDo ] Start delete selecteds to dos',
+    toDoStartDeleteSelectedsSuccess: '[ ToDo ] Start delete selectds to dos success',
+    toDoChangeSortingType: '[ ToDo ] Start changing sorting type'
 };

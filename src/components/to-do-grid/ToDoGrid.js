@@ -5,14 +5,18 @@ import { Box } from "@mui/system";
 
 import { ToDoCard } from "../to-do-card/ToDoCard";
 
+import { getSortedToDos } from "../../helpers/sortsHelper";
+
 export const ToDoGrid = () => {
     // @ts-ignore
-    const { toDoList } = useSelector( ( state ) => state.toDo );   
+    const { toDoList, sortingType } = useSelector( ( state ) => state.toDo );   
+
+    const sortedToDoList = getSortedToDos( toDoList, sortingType );
 
     return (
         <Box sx={ { mt: 4 } }>
             {
-                toDoList.map( ( toDo ) => (
+                sortedToDoList.map( ( toDo ) => (
                     <ToDoCard
                         key={ toDo.id }
                         { ...toDo }

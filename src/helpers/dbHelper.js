@@ -42,14 +42,14 @@ export const putToDo = async ( toDo ) => {
     return await response.json();
 }
 
-export const deleteToDos = async ( selected = [] ) => {
+export const deleteToDos = async ( ids = [] ) => {
     const baseUrl = 'http://localhost:3004/todos/';
     const requestOptions = {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' }
     };
 
-    selected.forEach( async ( id ) => {
+    ids.forEach( async ( id ) => {
         await fetch( baseUrl + id, requestOptions );
     } );
 }

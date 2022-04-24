@@ -3,7 +3,8 @@ import { toDoTypes } from "../types/toDoTypes";
 const initialState = {
     toDoList: [],
     selectedToDo: null,
-    selectedToDos: []
+    selectedToDos: [],
+    sortingType: 0
 };
 
 export const toDoReducer = ( state = initialState, { type, payload } ) => {
@@ -78,6 +79,24 @@ export const toDoReducer = ( state = initialState, { type, payload } ) => {
                     return toDo;
                 } ),
                 selectedToDos: []
+            };
+
+        case toDoTypes.toDoStartDeleteSelecteds:
+            return {
+                ...state
+            };
+        
+        case toDoTypes.toDoStartDeleteSelectedsSuccess:
+            return {
+                ...state,
+                toDoList: state.toDoList.filter( ( toDo ) => !payload.includes( toDo.id ) ),
+                selectedToDos: []
+            };
+        
+        case toDoTypes.toDoChangeSortingType: 
+            return {
+                ...state,
+                sortingType: payload
             };
 
         default: 
